@@ -14,6 +14,7 @@ namespace ConsoleApplication1
             Console.WriteLine("Нажмите Esc для выхода из программы");
             Console.WriteLine();
 
+            // В массиве 1 - х, 2 - y, 3 - V
             int[][] V = new int[5][];
             V[0] = new int[] { 0, 0, 1 };
             V[1] = new int[] { 0, 1, 2 };
@@ -40,12 +41,17 @@ namespace ConsoleApplication1
             // координата y искомой точки
             double y = 0;
 
+
+            Console.WriteLine("Длина  | Время преодоления  ");
+            Console.WriteLine("--------------------------");
+
+
             // Вычисление длины каждого отрезка
             for (int i = 0; i < V.Length - 1; i++)
             {
                 //int l1 = Math.Round(Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)));
                 lineSegment[i] = Math.Sqrt(Math.Pow((V[i + 1][0] - V[i][0]), 2) + Math.Pow((V[i + 1][1] - V[i][1]), 2));
-                Console.WriteLine("l{0} = {1:0.##}", i, lineSegment[i]);
+                Console.Write("l{0} = {1:0.##} | ", i, lineSegment[i]);
 
                 // Вычисление времени прохождения каждого отрезка
                 arrTime[i] = lineSegment[i] / V[i][2];
@@ -58,6 +64,7 @@ namespace ConsoleApplication1
 
                 Console.WriteLine("t{0} = {1:0.##}", i, arrTime[i]);
             }
+            Console.WriteLine("--------------------------");
             Console.WriteLine("Общая длина отрезков: {0:0.##} м", totalLength);
             Console.WriteLine("Время прохождения всего маршрута {0:0.##} с", totalTime);
 
@@ -94,7 +101,6 @@ namespace ConsoleApplication1
                     ////////////////////////////////////////
                     // Первое решение
                     ////////////////////////////////////////
-
                     //int i = 0;
                     //if (lengthRoute < lineSegment[i])
                     //{
@@ -124,10 +130,10 @@ namespace ConsoleApplication1
                     //    x = V[3][0] + (V[4][0] - V[3][0]) * length__numberLineSegment / lineSegment[numberLineSegment];
                     //    y = V[3][1] + (V[4][1] - V[3][1]) * length__numberLineSegment / lineSegment[numberLineSegment];
                     //}
+
                     ////////////////////////////////////////
                     // Второе решение
                     ////////////////////////////////////////
-
                     //double sumTemp = 0;
                     //double sumLineSegments = 0;
                     //for (int i = 0; i < V.Length - 1; i++)
@@ -145,22 +151,19 @@ namespace ConsoleApplication1
                     //    }
                     //    sumTemp += lineSegment[i];
                     //}
-
                     // Сумма временных интервалов прохождения отрезков до текущего отрезка маршрута 
-                    //double sumTime = 0;
-
                     double sumTimeSegments = 0;
 
                     // Определение на каком отрезке нужно вычислить координаты объекта
                     // в зависимости от введеного времени - time
-                    for (int i = 0; i < arrTime.Length - 1; i++)
+                    for (int i = 0; i < arrTime.Length; i++)
                     {                         
                         timeCurrentLine = time - sumTimeSegments;
 
-                        if (timeCurrentLine < arrTime[i])
+                        if (time > 0 && timeCurrentLine < arrTime[i])
                         {                            
                             // Вычисление пройденого растояния на конкретном отрезке по формуле S = V * t
-                            length__numberLineSegment = V[i][2] * arrTime[i];
+                            length__numberLineSegment = V[i][2] * timeCurrentLine;
 
                             x = V[i][0] + (V[i + 1][0] - V[i][0]) * length__numberLineSegment / lineSegment[i];
                             y = V[i][1] + (V[i + 1][1] - V[i][1]) * length__numberLineSegment / lineSegment[i];
@@ -172,13 +175,12 @@ namespace ConsoleApplication1
                 }
 
                 Console.WriteLine();
-                //Console.WriteLine("Длина всего маршрута {0:0.##} ", lengthRoute);
                 Console.WriteLine("Номер отрезка, где находится объект: {0}", numberLineSegment);
                 Console.WriteLine("Длина перемещения объекта на конкретном отрезке: {0:0.##}", length__numberLineSegment);
                 Console.WriteLine("Временой интервал перемещения объекта на конкретном отрезке: {0:0.##}", timeCurrentLine);
                 Console.WriteLine("Координаты конечной точки маршрута x = {0:0.##}, y = {1:0.##}", x, y);
                 Console.WriteLine("-------------------------------------------------------------");
-                Console.ReadKey();
+                //Console.ReadKey();
 
             } while (Console.ReadKey().Key != ConsoleKey.Escape);
         }
